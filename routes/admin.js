@@ -15,7 +15,7 @@ router.get('/posts', function(req, res) {
     res.send('Página de Posts')
 })
 
-// Categorias
+// LISTA DE CATEGORIAS
 router.get('/categorias', function(req, res) {
     Categoria.find().sort({nome: 'asc'}).lean().then(function(categorias) {
         res.render('./admin/categorias', {categorias: categorias})
@@ -29,6 +29,7 @@ router.get('/categorias/add', function(req, res) {
     res.render('./admin/addcategorias')
 })
 
+//EDITAR CATEGORIA
 router.get('/categorias/editar/:id', function(req, res) {
     Categoria.findOne({_id: req.params.id}).lean().then(function(categoria) {
         res.render('./admin/editarcategoria', {categoria: categoria})
@@ -59,6 +60,20 @@ router.post('/categorias/editarcategoria', function(req, res) {
     }
 })
 
+//DELETAR CATEGORIA
+router.get('/categorias/deletar/:id', function(req, res) {
+    Categoria.findOneAndRemove({_id: req.params.id}).lean().then(function(categoria) {
+        if (confirm('Deletar Categoria ?')) {
+            req.flash('success_msg', 'Categoria deletada com sucesso!')
+            res.redirect('/categorias')
+        }
+    }).catch(function(err) {
+        req.flash('error_msg', 'Categoria não encontrada!')
+        res.redirect('/categorias')
+    })
+})
+
+// ADD CATEGORIAS
 router.post('/categorias/nova', function(req, res) {
     
     let erros = validaCampos(req.body)
@@ -79,9 +94,5 @@ router.post('/categorias/nova', function(req, res) {
         })
     }
 })
-
-router.delete('/', function(req, res) {
-
-} )
 
 module.exports = router
