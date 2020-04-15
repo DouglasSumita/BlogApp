@@ -3,6 +3,8 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require('../models/Categoria')
 const Categoria = mongoose.model('categorias')
+require('../models/Postagem')
+const Postagem = mongoose.model('postagens')
 const validaCampos = require('../validacao')
 
 // Inicial
@@ -10,9 +12,46 @@ router.get('/', function(req, res) {
     res.render('./admin/index')
 })
 
-// Posts
-router.get('/posts', function(req, res) {
-    res.send('Página de Posts')
+// POSTAGENS
+router.get('/postagens', function(req, res) {
+    Postagem.find().sort('data').lean().then(function(postagens) {
+        res.render('./admin/postagens', {postagens: postagens})
+    }).catch(function(err) {
+        req.flash('error_msg', 'Houve um erro ao listar as postagens!')
+        res.redirect('/')
+    })
+})
+
+router.get('/postagens/add', function(req, res) {
+    Categoria.find().sort('nome').lean().then(function(categoria) {
+        res.render('./admin/addpostagens', {categoria: categoria})
+    }).catch(function(err) {
+        req.flash('error_msg', 'Erro ao carregar as categorias!')
+        res.redirect('/postagens')
+    })
+})
+
+router.post('/postagem/nova', function(req, res) {
+    let erros = validaCampos.Postagem(req.body)
+
+    if (erros.length > 0) {
+        res.render('./admin/addpostagens', {erros: erros})
+    } else {
+        const novaPostagem = {
+            titulo: req.body.titulo,
+            slug: req.body.slug,
+            descricao: req.body.descricao,
+            conteudo: req.body.conteudo,
+            categoria: req.body.categoria
+        }
+        new Postagem(novaPostagem).save().then(function() {
+            req.flash('success_msg', 'Postagem criada com Sucesso!')
+            res.redirect('/categorias')
+        }).catch(function(err) {
+            req.flash('error_msg', 'Houve um erro ao salvar a postagem, tente novamente!')
+            res.redirect('/')
+        })
+    }
 })
 
 // LISTA DE CATEGORIAS
