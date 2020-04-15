@@ -15,15 +15,15 @@
             <a href="/postagens/deletar/{{_id}}"><button class="btn btn-danger mt-4">Deletar</button></a>
         </div>
     </div> --}}
-
-    <div class="card">
+    <div class="card mt-2">
         <div class="card-header">
             <h4>{{titulo}}</h4>
         </div>
         <div class="card-body">
-            <h5 class="card-title">{{descricao}}</h5>
+            {{!-- <h5 class="card-title">{{descricao}}</h5> --}}
             <p class="card-text">{{conteudo}}</p>
-            <a href="#" class="btn btn-primary">Editar</a>
+            <a href="/postagens/editar/{{_id}}"><button class="btn btn-primary mt-4">Editar</button></a>
+            <a href="/postagens/deletar/{{_id}}"><button class="btn btn-danger mt-4">Deletar</button></a>
         </div>
     </div>
 

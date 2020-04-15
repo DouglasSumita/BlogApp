@@ -46,7 +46,7 @@ router.post('/postagem/nova', function(req, res) {
         }
         new Postagem(novaPostagem).save().then(function() {
             req.flash('success_msg', 'Postagem criada com Sucesso!')
-            res.redirect('/categorias')
+            res.redirect('/postagens')
         }).catch(function(err) {
             req.flash('error_msg', 'Houve um erro ao salvar a postagem, tente novamente!')
             res.redirect('/')
@@ -79,11 +79,13 @@ router.get('/categorias/editar/:id', function(req, res) {
 })
 
 router.post('/categorias/editarcategoria', function(req, res) {
+    
+    let erros = validaCampos.Categoria(req.body)
 
-    let erros = validaCampos(req.body)
     if (erros.length > 0) {
-        req.flash("error_msg", "Erro ao atualizar categoria")
-        res.redirect('/categorias')
+        Categoria.findOne({_id: req.body.id}).lean().then(function(categoria) {
+            res.render('./admin/editarcategoria', {erros: erros, categoria: categoria})
+        })
     } else {
         let filter = { _id: req.body.id }
         let update = { 
@@ -115,7 +117,7 @@ router.get('/categorias/deletar/:id', function(req, res) {
 // ADD CATEGORIAS
 router.post('/categorias/nova', function(req, res) {
     
-    let erros = validaCampos(req.body)
+    let erros = validaCampos.Categoria(req.body)
 
     if (erros.length > 0) {
         res.render('./admin/addcategorias', {erros: erros})
