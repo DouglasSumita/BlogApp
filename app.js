@@ -6,6 +6,7 @@ const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const app = express()
 const admin = require('./routes/admin')
+const usuarios = require('./routes/usuario')
 const path = require('path')
 const mongoose = require('mongoose')
 const session = require('express-session')
@@ -68,6 +69,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Rotas
 app.use('/', admin)
+app.use('/', usuarios)
 
 // Outros
 const PORT = 8081
