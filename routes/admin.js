@@ -35,6 +35,21 @@ router.get('/postagens/add', function(req, res) {
     })
 })
 
+//APRESENTAR POSTAGEM 
+router.get('/postagem/:slug', function(req, res) {
+    Postagem.findOne({slug: req.params.slug}).populate('categoria').lean().then(function(postagem) {
+        if (postagem) {
+            res.render('./postagem/index', {postagem: postagem})
+        } else {
+            req.flash('error_msg', 'Esta postagem não existe!')
+            res.redirect('/')
+        }
+    }).catch(function(err) {
+        req.flash('error_msg', 'Erro ao carregar a postagem!')
+        res.redirect('/')
+    })
+})
+
 router.post('/postagem/nova', function(req, res) {
     let erros = validaCampos.Postagem(req.body)
 
