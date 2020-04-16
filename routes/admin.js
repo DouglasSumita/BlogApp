@@ -9,7 +9,11 @@ const validaCampos = require('../validacao')
 
 // Inicial
 router.get('/', function(req, res) {
-    res.render('./admin/index')
+    Postagem.find().sort({data: 'desc'}).populate('categoria').lean().then(function(postagens) {
+        res.render('./admin/index', {postagens: postagens})
+    }).catch(function(err) {
+        req.flash('error_msg', 'Houve um erro ao carregar as postagens!')
+     })
 })
 
 // POSTAGENS
