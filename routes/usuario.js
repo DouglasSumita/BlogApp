@@ -4,7 +4,9 @@ const mongoose = require('mongoose')
 require('../models/Usuario')
 const Usuario = mongoose.model('usuarios')
 const validaCampos = require('../validacao')
+const bcrypt = require('bcryptjs')
 
+//ROTAS
 router.get('/registro', function(req, res) {
     res.render('./usuarios/registro')
 })
@@ -28,13 +30,27 @@ router.post('/registrar', function(req, res) {
                     email: req.body.email,
                     senha: req.body.senha
                 }
-                new Usuario(novoUsuario).save().then(function() {
-                    req.flash('success_msg', 'Usuario criado com Sucesso!')
-                    res.redirect('/registro')
-                }).catch(function(err) {
-                    req.flash('error_msg', 'Houve um erro ao registrar o Usuario, tente novamente!')
-                    res.redirect('/registro')
+                
+                bcrypt.genSalt(10, function(erro, salt) {
+                    bcrypt.hash(novoUsuario.senha, salt, function(erro, hash) {
+                        if (erro) {
+                            req.flash('error_msg', 'Erro ao cadastrar usuário.')
+                            res.redirect('/registro')
+                        } else {
+                            novoUsuario.senha = hash
+
+                            new Usuario(novoUsuario).save().then(function() {
+                                req.flash('success_msg', 'Usuario criado com Sucesso!')
+                                res.redirect('/registro')
+                            }).catch(function(err) {
+                                req.flash('error_msg', 'Houve um erro ao registrar o Usuario, tente novamente!')
+                                res.redirect('/registro')
+                            })
+                        }
+                    })    
                 })
+
+
             }
 
         }).catch(function(err) {
