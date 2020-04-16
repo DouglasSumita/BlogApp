@@ -18,3 +18,4 @@ Links para acessar via Browser:
 Pagina Inicial: http://localhost:8081/
 Categorias: http://localhost:8081/categorias
 Postagens: http://localhost:8081/postagens
+Postagem Específica: http://localhost:8081/postagem/"slug da postagem"
