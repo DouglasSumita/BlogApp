@@ -14,7 +14,7 @@ router.get('/', function(req, res) {
 
 // POSTAGENS
 router.get('/postagens', function(req, res) {
-    Postagem.find().sort('data').lean().then(function(postagens) {
+    Postagem.find().populate('categoria').sort({data: 'desc'}).lean().then(function(postagens) {
         res.render('./admin/postagens', {postagens: postagens})
     }).catch(function(err) {
         req.flash('error_msg', 'Houve um erro ao listar as postagens!')
@@ -23,8 +23,8 @@ router.get('/postagens', function(req, res) {
 })
 
 router.get('/postagens/add', function(req, res) {
-    Categoria.find().sort('nome').lean().then(function(categoria) {
-        res.render('./admin/addpostagens', {categoria: categoria})
+    Categoria.find().sort('nome').lean().then(function(categorias) {
+        res.render('./admin/addpostagens', {categorias: categorias})
     }).catch(function(err) {
         req.flash('error_msg', 'Erro ao carregar as categorias!')
         res.redirect('/postagens')
@@ -50,6 +50,63 @@ router.post('/postagem/nova', function(req, res) {
         }).catch(function(err) {
             req.flash('error_msg', 'Houve um erro ao salvar a postagem, tente novamente!')
             res.redirect('/')
+        })
+    }
+})
+
+//EDITAR POSTAGEM
+router.get('/postagens/editar/:id', function(req, res) {
+    Postagem.findOne({_id: req.params.id}).populate('categoria').lean().then(function(postagem) {
+        Categoria.find().sort('nome').lean().then(function(categorias) {   
+            res.render('./admin/editarpostagem', {postagem: postagem, categorias: categorias})
+        }).catch(function(err) {
+            req.flash('error_msg', 'Erro ao carregar as categorias')
+            res.redirect('/postagens')
+        })
+    }).catch(function(err) {
+        req.flash('error_msg', 'Postagem não encontrada!')
+        res.redirect('/postagens')
+    })
+})
+
+//DELETAR POSTAGEM
+router.get('/postagens/deletar/:id', function(req, res) {
+    Postagem.findOneAndRemove({_id: req.params.id}).lean().then(function(postagem) {
+        req.flash('success_msg', 'Postagem deletada com sucesso!')
+        res.redirect('/postagens')
+    }).catch(function(err) {
+        req.flash('error_msg', 'Postagem não encontrada!')
+        res.redirect('/postagens')
+    })
+})
+
+router.post('/postagens/editarpostagem', function(req, res) {
+    
+    let erros = validaCampos.Postagem(req.body)
+
+    if (erros.length > 0) {
+        Postagem.findOne({_id: req.body.id}).populate('categoria').lean().then(function(postagem) {
+            Categoria.find().sort('nome').lean().then(function(categorias) {   
+                res.render('./admin/editarpostagem', {erros: erros, postagem: postagem, categorias: categorias})
+            }).catch(function(err) {
+                req.flash('error_msg', 'Erro ao carregar as categorias')
+                res.redirect('/postagens')
+            })
+        })
+    } else {
+        let filter = { _id: req.body.id }
+        let update = { 
+            titulo: req.body.titulo,
+            slug: req.body.slug,
+            descricao: req.body.descricao,
+            conteudo: req.body.conteudo,
+            categoria: req.body.categoria
+        }
+        Postagem.findOneAndUpdate(filter, update).then(function() {
+            req.flash("success_msg", "Postagem atualizada com sucesso!")
+            res.redirect('/postagens')
+        }).catch(function(err) {
+            req.flash("error_msg", "Erro ao atualizar postagem!")
         })
     }
 })
@@ -90,7 +147,7 @@ router.post('/categorias/editarcategoria', function(req, res) {
         let filter = { _id: req.body.id }
         let update = { 
             nome: req.body.nome,
-             slug: req.body.slug 
+            slug: req.body.slug 
         }
         Categoria.findOneAndUpdate(filter, update).then(function() {
             req.flash("success_msg", "Categoria atualizada")
@@ -104,10 +161,8 @@ router.post('/categorias/editarcategoria', function(req, res) {
 //DELETAR CATEGORIA
 router.get('/categorias/deletar/:id', function(req, res) {
     Categoria.findOneAndRemove({_id: req.params.id}).lean().then(function(categoria) {
-        if (confirm('Deletar Categoria ?')) {
-            req.flash('success_msg', 'Categoria deletada com sucesso!')
-            res.redirect('/categorias')
-        }
+        req.flash('success_msg', 'Categoria deletada com sucesso!')
+        res.redirect('/categorias')
     }).catch(function(err) {
         req.flash('error_msg', 'Categoria não encontrada!')
         res.redirect('/categorias')

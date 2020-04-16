@@ -11,7 +11,6 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('connect-flash')
 
-
 //Configurações:
 //  Sessão
 app.use(session({
@@ -40,6 +39,17 @@ app.engine('handlebars', handlebars({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }))
 app.set('view engine', 'handlebars')
+
+// Criação de Helpers customizados 
+var handlebarsCreate = handlebars.create({})
+// verificar se valores são iguais
+handlebarsCreate.handlebars.registerHelper('if_eq', function(a, b, opts) {
+    if (a.toString() == b.toString()) {
+        return opts.fn(this);
+    } else {
+        return opts.inverse(this);
+    }
+})
 
 // mongoose
 mongoose.Promise = global.Promise;

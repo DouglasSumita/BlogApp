@@ -22,6 +22,9 @@
         <div class="card-body">
             {{!-- <h5 class="card-title">{{descricao}}</h5> --}}
             <p class="card-text">{{conteudo}}</p>
+            <small>{{data}}</small>
+            <small>{{categoria.nome}}</small>
+            <br>
             <a href="/postagens/editar/{{_id}}"><button class="btn btn-primary mt-4">Editar</button></a>
             <a href="/postagens/deletar/{{_id}}"><button class="btn btn-danger mt-4">Deletar</button></a>
         </div>

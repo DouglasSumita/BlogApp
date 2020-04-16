@@ -13,13 +13,13 @@
                     <input type="text" id="titulo" name="titulo" class="form-control" required>
                 <label for="slug">Slug:</label>
                     <input type="text" id="slug" name="slug" class="form-control" required>
-                <label for="slug">Descrição:</label>
+                <label for="descricao">Descrição:</label>
                     <input type="text" id="descricao" name="descricao" class="form-control" required>                    
-                <label for="slug">Conteúdo:</label>
+                <label for="conteudo">Conteúdo:</label>
                     <textarea name="conteudo" class="form-control"></textarea required>
                 <label for="categoria">Categoria:</label>
                 <select name="categoria" class="custom-select">
-                    {{#each categoria}}
+                    {{#each categorias}}
                         <option value="{{_id}}">{{nome}}</option>
                     {{else}}
                         <option value="0">Nenhuma categoria registrada</option>
