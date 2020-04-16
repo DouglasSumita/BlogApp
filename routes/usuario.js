@@ -7,6 +7,13 @@ const validaCampos = require('../validacao')
 const bcrypt = require('bcryptjs')
 
 //ROTAS
+
+//LOGAR
+router.get('/login', function(req, res) {
+    res.render('./usuarios/login')
+})
+
+//REGISTRAR
 router.get('/registro', function(req, res) {
     res.render('./usuarios/registro')
 })

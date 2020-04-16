@@ -15,7 +15,9 @@ Necessário:
 * Se tudo ocorreu bem ira apresentar mensagem na linha de comando do node: "Servidor rodando!" e "Conectado ao MongoDB com sucesso".
 
 Links para acessar via Browser: 
+host: http://localhost:8081/
 Pagina Inicial: http://localhost:8081/
-Categorias: http://localhost:8081/categorias
-Postagens: http://localhost:8081/postagens
-Postagem Específica: http://localhost:8081/postagem/"slug da postagem"
+Registrar Usuario: /registro
+Categorias: /categorias
+Postagens: /postagens
+Postagem Específica: /postagem/"slug da postagem"
