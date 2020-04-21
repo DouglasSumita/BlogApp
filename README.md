@@ -35,4 +35,4 @@ Postagens:
    * Deletar: /postagens/deletar/:id
    * Postagem Específica: /postagem/:slug
 
-*  Para acessar as rotas Editar/Criar/Deletar Categorias e Postagens sera necessário cadastrar o usuário como Administrador utilizando o checkbox "Administrador" na opção "Registrar-se".
+*  Para acessar as rotas Editar/Criar/Deletar Categorias e Postagens sera necessário cadastrar o usuário como Administrador marcando o checkbox "Administrador" na opção "Registrar-se".
