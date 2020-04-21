@@ -15,10 +15,24 @@ Necessário:
 * Se tudo ocorreu bem ira apresentar mensagem na linha de comando do node: "Servidor rodando!" e "Conectado ao MongoDB com sucesso".
 
 Links para acessar via Browser: 
-host: http://localhost:8081/
+
 Pagina Inicial: http://localhost:8081/
-Login: /login
-Registrar Usuario: /registro
-Categorias: /categorias
-Postagens: /postagens
-Postagem Específica: /postagem/"slug da postagem"
+
+Usuarios:
+   Login: /login
+   Logout: /logout
+   Registrar Usuario: /registro
+
+
+Categorias: 
+   Listar: /categorias
+   Editar: /categorias/editar/:id
+   Deletar: /categorias/deletar/:id
+
+Postagens: 
+   Listar: /postagens
+   Editar: /postagens/editar/:id
+   Deletar: /postagens/deletar/:id
+   Postagem Específica: /postagem/:slug
+
+# Opção como Edição e Criação de Postagens e Categorias sera necessário cadastrar o usuário como Administrador utilizando o checkbox "Administrador" na opção "Registrar-se".

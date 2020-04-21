@@ -41,10 +41,12 @@ router.post('/registrar', function(req, res) {
                 req.flash('error_msg', 'Ja existe uma conta com esse e-mail cadastrado no sistema!')
                 res.redirect('/registro')
             } else {
+                console.log(req.body.administrador)
                 const novoUsuario = {
                     nome: req.body.nome,
                     email: req.body.email,
-                    senha: req.body.senha
+                    senha: req.body.senha,
+                    eAdmin: req.body.administrador
                 }
                 
                 bcrypt.genSalt(10, function(erro, salt) {
