@@ -11,7 +11,7 @@ const {eAutenticado} = require('../helpers/eAdmin')
 
 // Inicial
 
-router.get('/', eAutenticado, function(req, res) {
+router.get('/', function(req, res) {
     Postagem.find().sort({data: 'desc'}).populate('categoria').lean().then(function(postagens) {
         res.render('./admin/index', {postagens: postagens})
     }).catch(function(err) {
