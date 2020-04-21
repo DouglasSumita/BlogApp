@@ -13,6 +13,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
 require('./config/auth')(passport)
+const db = require('./config/db')
 
 //Configurações:
 //  Sessão
@@ -62,7 +63,7 @@ handlebarsCreate.handlebars.registerHelper('if_eq', function(a, b, opts) {
 
 // mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/blogapp', {
+mongoose.connect(db.mongoURI, {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false
@@ -79,8 +80,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', admin)
 app.use('/', usuarios)
 
-// Outros
-const PORT = 8081
+
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, function() {
     console.log('Servidor rodando!')
 })
