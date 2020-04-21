@@ -5,12 +5,21 @@ require('../models/Usuario')
 const Usuario = mongoose.model('usuarios')
 const validaCampos = require('../validacao')
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
 
 //ROTAS
 
 //LOGAR
 router.get('/login', function(req, res) {
     res.render('./usuarios/login')
+})
+
+router.post('/login', function(req, res, next) {
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    })(req, res, next)
 })
 
 //REGISTRAR

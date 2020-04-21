@@ -6,9 +6,12 @@ const Categoria = mongoose.model('categorias')
 require('../models/Postagem')
 const Postagem = mongoose.model('postagens')
 const validaCampos = require('../validacao')
+const {eAdmin} = require('../helpers/eAdmin')
+const {eAutenticado} = require('../helpers/eAdmin')
 
 // Inicial
-router.get('/', function(req, res) {
+
+router.get('/', eAutenticado, function(req, res) {
     Postagem.find().sort({data: 'desc'}).populate('categoria').lean().then(function(postagens) {
         res.render('./admin/index', {postagens: postagens})
     }).catch(function(err) {
@@ -17,7 +20,7 @@ router.get('/', function(req, res) {
 })
 
 // POSTAGENS
-router.get('/postagens', function(req, res) {
+router.get('/postagens', eAutenticado, function(req, res) {
     Postagem.find().populate('categoria').sort({data: 'desc'}).lean().then(function(postagens) {
         res.render('./admin/postagens', {postagens: postagens})
     }).catch(function(err) {
@@ -26,7 +29,7 @@ router.get('/postagens', function(req, res) {
     })
 })
 
-router.get('/postagens/add', function(req, res) {
+router.get('/postagens/add', eAdmin, function(req, res) {
     Categoria.find().sort('nome').lean().then(function(categorias) {
         res.render('./admin/addpostagens', {categorias: categorias})
     }).catch(function(err) {
@@ -36,7 +39,7 @@ router.get('/postagens/add', function(req, res) {
 })
 
 //APRESENTAR POSTAGEM 
-router.get('/postagem/:slug', function(req, res) {
+router.get('/postagem/:slug', eAdmin, function(req, res) {
     Postagem.findOne({slug: req.params.slug}).populate('categoria').lean().then(function(postagem) {
         if (postagem) {
             res.render('./postagem/index', {postagem: postagem})
@@ -50,7 +53,7 @@ router.get('/postagem/:slug', function(req, res) {
     })
 })
 
-router.post('/postagem/nova', function(req, res) {
+router.post('/postagem/nova', eAdmin, function(req, res) {
     let erros = validaCampos.Postagem(req.body)
 
     if (erros.length > 0) {
@@ -74,7 +77,7 @@ router.post('/postagem/nova', function(req, res) {
 })
 
 //EDITAR POSTAGEM
-router.get('/postagens/editar/:id', function(req, res) {
+router.get('/postagens/editar/:id', eAdmin, function(req, res) {
     Postagem.findOne({_id: req.params.id}).populate('categoria').lean().then(function(postagem) {
         Categoria.find().sort('nome').lean().then(function(categorias) {   
             res.render('./admin/editarpostagem', {postagem: postagem, categorias: categorias})
@@ -89,7 +92,7 @@ router.get('/postagens/editar/:id', function(req, res) {
 })
 
 //DELETAR POSTAGEM
-router.get('/postagens/deletar/:id', function(req, res) {
+router.get('/postagens/deletar/:id', eAdmin, function(req, res) {
     Postagem.findOneAndRemove({_id: req.params.id}).lean().then(function(postagem) {
         req.flash('success_msg', 'Postagem deletada com sucesso!')
         res.redirect('/postagens')
@@ -99,7 +102,7 @@ router.get('/postagens/deletar/:id', function(req, res) {
     })
 })
 
-router.post('/postagens/editarpostagem', function(req, res) {
+router.post('/postagens/editarpostagem', eAdmin, function(req, res) {
     
     let erros = validaCampos.Postagem(req.body)
 
@@ -131,7 +134,7 @@ router.post('/postagens/editarpostagem', function(req, res) {
 })
 
 // LISTA DE CATEGORIAS
-router.get('/categorias', function(req, res) {
+router.get('/categorias', eAutenticado, function(req, res) {
     Categoria.find().sort({nome: 'asc'}).lean().then(function(categorias) {
         res.render('./admin/categorias', {categorias: categorias})
     }).catch(function(err) {
@@ -140,12 +143,12 @@ router.get('/categorias', function(req, res) {
     })
 })
 
-router.get('/categorias/add', function(req, res) {
+router.get('/categorias/add', eAdmin, function(req, res) {
     res.render('./admin/addcategorias')
 })
 
 //EDITAR CATEGORIA
-router.get('/categorias/editar/:id', function(req, res) {
+router.get('/categorias/editar/:id', eAdmin, function(req, res) {
     Categoria.findOne({_id: req.params.id}).lean().then(function(categoria) {
         res.render('./admin/editarcategoria', {categoria: categoria})
     }).catch(function(err) {
@@ -154,7 +157,7 @@ router.get('/categorias/editar/:id', function(req, res) {
     })
 })
 
-router.post('/categorias/editarcategoria', function(req, res) {
+router.post('/categorias/editarcategoria', eAdmin, function(req, res) {
     
     let erros = validaCampos.Categoria(req.body)
 
@@ -178,7 +181,7 @@ router.post('/categorias/editarcategoria', function(req, res) {
 })
 
 //DELETAR CATEGORIA
-router.get('/categorias/deletar/:id', function(req, res) {
+router.get('/categorias/deletar/:id', eAdmin, function(req, res) {
     Categoria.findOneAndRemove({_id: req.params.id}).lean().then(function(categoria) {
         req.flash('success_msg', 'Categoria deletada com sucesso!')
         res.redirect('/categorias')
@@ -189,7 +192,7 @@ router.get('/categorias/deletar/:id', function(req, res) {
 })
 
 // ADD CATEGORIAS
-router.post('/categorias/nova', function(req, res) {
+router.post('/categorias/nova', eAdmin, function(req, res) {
     
     let erros = validaCampos.Categoria(req.body)
 

@@ -17,6 +17,7 @@ Necessário:
 Links para acessar via Browser: 
 host: http://localhost:8081/
 Pagina Inicial: http://localhost:8081/
+Login: /login
 Registrar Usuario: /registro
 Categorias: /categorias
 Postagens: /postagens
