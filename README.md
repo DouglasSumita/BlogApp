@@ -19,20 +19,20 @@ Links para acessar via Browser:
 Pagina Inicial: http://localhost:8081/
 
 Usuarios:
-   Login: /login
-   Logout: /logout
-   Registrar Usuario: /registro
+   * Login: /login
+   * Logout: /logout
+   * Registrar Usuario: /registro
 
 
 Categorias: 
-   Listar: /categorias
-   Editar: /categorias/editar/:id
-   Deletar: /categorias/deletar/:id
+   * Listar: /categorias
+   * Editar: /categorias/editar/:id
+   * Deletar: /categorias/deletar/:id
 
 Postagens: 
-   Listar: /postagens
-   Editar: /postagens/editar/:id
-   Deletar: /postagens/deletar/:id
-   Postagem Específica: /postagem/:slug
+   * Listar: /postagens
+   * Editar: /postagens/editar/:id
+   * Deletar: /postagens/deletar/:id
+   * Postagem Específica: /postagem/:slug
 
-# Opção como Edição e Criação de Postagens e Categorias sera necessário cadastrar o usuário como Administrador utilizando o checkbox "Administrador" na opção "Registrar-se".
+*  Para acessar as rotas Editar/Criar/Deletar Categorias e Postagens sera necessário cadastrar o usuário como Administrador utilizando o checkbox "Administrador" na opção "Registrar-se".
