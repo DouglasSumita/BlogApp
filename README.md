@@ -1,5 +1,7 @@
 # Projeto BlogApp API com NodeJS, MongoDB, Handlebars e Bootstrap. #
 
+Link hospedado: https://blogapp-sumita.herokuapp.com/
+
 O Projeto BlogApp é uma API desenvolvida na linguagem JavaScript utilizando a plataforma e recursos do NodeJS,
 utilizando também os frameworks como Handlebars, Bootstrap e banco de dados MongoDB.
 
@@ -14,7 +16,7 @@ Necessário:
 * Iniciar serviço da Api com comando: "npm start"
 * Se tudo ocorreu bem ira apresentar mensagem na linha de comando do node: "Servidor rodando!" e "Conectado ao MongoDB com sucesso".
 
-Links para acessar via Browser: 
+Links para acessar via Browser local: 
 
 Pagina Inicial: http://localhost:8081/
 
